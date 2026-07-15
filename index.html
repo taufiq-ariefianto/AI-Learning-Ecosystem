@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Bab 4 - Integrasi Prompt Engineering &amp; Design Thinking. Platform pembelajaran interaktif dengan materi, game, dan kuis untuk SMA/MA Kelas X.">
+  <title>Bab 4 – Integrasi Prompt Engineering &amp; Design Thinking | AI Learning Hub</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+        'mono': ['JetBrains Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+html, body { height: 100%; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { overflow-x: hidden; }
+
+.glass {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.glass-dark {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.glass-card {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(99,102,241,0.15);
+  background: rgba(255,255,255,0.8);
+}
+.bg-main {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 25%, #fae8ff 50%, #e0e7ff 75%, #dbeafe 100%);
+  background-attachment: fixed;
+}
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+  animation: blobFloat 20s ease-in-out infinite alternate;
+}
+@keyframes blobFloat {
+  0% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-40px) scale(1.05); }
+  66% { transform: translate(-20px,30px) scale(0.95); }
+  100% { transform: translate(10px,-10px) scale(1); }
+}
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.anim-in { animation: fadeInUp 0.7s ease forwards; opacity: 0; }
+.anim-d1 { animation-delay: 0.1s; }
+.anim-d2 { animation-delay: 0.2s; }
+.anim-d3 { animation-delay: 0.3s; }
+.anim-d4 { animation-delay: 0.4s; }
+.anim-d5 { animation-delay: 0.5s; }
+.anim-d6 { animation-delay: 0.6s; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 50%; width: 0; height: 2px;
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.quiz-option {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid rgba(99,102,241,0.15);
+}
+.quiz-option:hover {
+  border-color: rgba(99,102,241,0.5);
+  background: rgba(99,102,241,0.08);
+  transform: translateX(4px);
+}
+.quiz-option.correct {
+  border-color: #22c55e;
+  background: rgba(34,197,94,0.1);
+}
+.quiz-option.wrong {
+  border-color: #ef4444;
+  background: rgba(239,68,68,0.1);
+}
+
+.tab-btn {
+  transition: all 0.3s ease;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+}
+
+.prompt-demo {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #e0e7ff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.progress-ring { transition: stroke-dashoffset 0.5s ease; }
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+}
+.accordion-content.open {
+  max-height: 2000px;
+}
+
+.timeline-dot {
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="bg-main overflow-auto"><!-- Blobs -->
+  <div class="blob" style="width:400px;height:400px;background:rgba(99,102,241,0.3);top:-100px;left:-100px;"></div>
+  <div class="blob" style="width:350px;height:350px;background:rgba(168,85,247,0.25);top:40%;right:-80px;animation-delay:-7s;"></div>
+  <div class="blob" style="width:300px;height:300px;background:rgba(59,130,246,0.2);bottom:-50px;left:30%;animation-delay:-14s;"></div><!-- Sticky Header -->
+  <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent;">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between"><a href="#hero" class="flex items-center gap-2">
+     <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+      AILE
+     </div><span id="site-title" class="font-bold text-gray-800 hidden sm:block text-sm">AI &amp; Learning Ecosystem</span> </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600"><a href="#pendahuluan" class="nav-link hover:text-indigo-600">Pendahuluan</a> <a href="#materi" class="nav-link hover:text-indigo-600">Materi</a> <a href="#prompt" class="nav-link hover:text-indigo-600">Prompt Lab</a> <a href="#game" class="nav-link hover:text-indigo-600">🎮 Game</a> <a href="#aktivitas" class="nav-link hover:text-indigo-600">Aktivitas</a> <a href="#kuis" class="nav-link hover:text-indigo-600">Kuis</a>
+    </nav><button id="menu-toggle" class="md:hidden p-2 rounded-xl hover:bg-white/40 transition"> <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i> </button>
+   </div><!-- Mobile Menu -->
+   <div id="mobile-menu" class="md:hidden hidden glass mx-4 mb-2 rounded-2xl p-4 shadow-lg">
+    <nav class="flex flex-col gap-3 text-sm font-medium text-gray-600"><a href="#pendahuluan" class="mob-link hover:text-indigo-600 py-1">📖 Pendahuluan</a> <a href="#materi" class="mob-link hover:text-indigo-600 py-1">📚 Materi</a> <a href="#prompt" class="mob-link hover:text-indigo-600 py-1">💡 Prompt Lab</a> <a href="#game" class="mob-link hover:text-indigo-600 py-1">🎮 Game</a> <a href="#aktivitas" class="mob-link hover:text-indigo-600 py-1">🎯 Aktivitas</a> <a href="#kuis" class="mob-link hover:text-indigo-600 py-1">✅ Kuis</a>
+    </nav>
+   </div>
+  </header>
+  <main class="relative z-10 w-full"><!-- Hero Section -->
+   <section id="hero" class="min-h-[90%] flex items-center justify-center px-4 pt-20 pb-16">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="anim-in anim-d1 inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-xs font-medium text-indigo-700 mb-6 shadow-sm"><i data-lucide="book-open" class="w-4 h-4"></i> Koding dan Kecerdasan Artifisial — Kelas X SMA/MA
+     </div>
+     <h1 id="chapter-title" class="anim-in anim-d2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6"><span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-500 bg-clip-text text-transparent">Integrasi Prompt Engineering</span> <br><span class="text-gray-800">&amp; Design Thinking pada KA</span></h1>
+     <p class="anim-in anim-d3 text-gray-500 text-lg sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">Bab 4 — Pelajari bagaimana menggabungkan teknik Prompt Engineering dengan metode Design Thinking untuk menciptakan solusi berbasis kecerdasan artifisial yang inovatif dan berpusat pada pengguna.</p>
+     <div class="anim-in anim-d4 flex flex-wrap justify-center gap-3"><a href="#pendahuluan" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm"> <i data-lucide="play" class="w-4 h-4"></i> Mulai Belajar </a> <a href="#kuis" class="inline-flex items-center gap-2 glass text-gray-700 font-semibold px-6 py-3 rounded-2xl shadow hover:shadow-lg hover:scale-105 transition-all text-sm"> <i data-lucide="check-circle" class="w-4 h-4"></i> Uji Pemahaman </a>
+     </div><!-- Quick Stats -->
+     <div class="anim-in anim-d5 grid grid-cols-3 gap-4 mt-12 max-w-md mx-auto">
+      <div class="glass-card rounded-2xl p-4 text-center">
+       <div class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        5
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Sub Materi
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-4 text-center">
+       <div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-fuchsia-500 bg-clip-text text-transparent">
+        3
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Aktivitas
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-4 text-center">
+       <div class="text-2xl font-bold bg-gradient-to-r from-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+        10
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Soal Kuis
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Tujuan Pembelajaran -->
+   <section id="pendahuluan" class="px-4 py-16">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="target" class="w-4 h-4"></i> PENDAHULUAN
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Tujuan Pembelajaran</h2>
+      <p class="text-gray-500 mt-3 max-w-xl mx-auto">Setelah mempelajari bab ini, peserta didik diharapkan mampu:</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="cpu" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Memahami Konsep KA</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Memahami konsep dasar kecerdasan artifisial serta hubungannya dengan prompt engineering.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="message-square" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Teknik Prompt Engineering</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Menerapkan berbagai teknik prompt engineering untuk mendapatkan respons KA yang optimal.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-fuchsia-400 to-fuchsia-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="lightbulb" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Design Thinking</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Mengintegrasikan metode Design Thinking dengan prompt engineering untuk solusi inovatif.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="users" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Solusi Berbasis Pengguna</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Merancang solusi KA yang berpusat pada kebutuhan pengguna dengan pendekatan empati.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="flask-conical" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Prototyping &amp; Testing</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Membuat prototipe solusi KA dan melakukan pengujian iteratif untuk perbaikan berkelanjutan.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white mb-4 shadow-lg"><i data-lucide="shield-check" class="w-6 h-6"></i>
+       </div>
+       <h3 class="font-bold text-gray-800 mb-2">Etika &amp; Tanggung Jawab</h3>
+       <p class="text-sm text-gray-500 leading-relaxed">Memahami aspek etika dalam penggunaan KA dan prompt engineering secara bertanggung jawab.</p>
+      </div>
+     </div><!-- Kata Kunci -->
+     <div class="glass-card rounded-2xl p-6 mt-8">
+      <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-indigo-500"></i> Kata Kunci</h3>
+      <div class="flex flex-wrap gap-2"><span class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-medium">Kecerdasan Artifisial</span> <span class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-full text-xs font-medium">Prompt Engineering</span> <span class="bg-fuchsia-100 text-fuchsia-700 px-3 py-1.5 rounded-full text-xs font-medium">Design Thinking</span> <span class="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-medium">Large Language Model</span> <span class="bg-cyan-100 text-cyan-700 px-3 py-1.5 rounded-full text-xs font-medium">Empathize</span> <span class="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-medium">Define</span> <span class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded-full text-xs font-medium">Ideate</span> <span class="bg-rose-100 text-rose-700 px-3 py-1.5 rounded-full text-xs font-medium">Prototype</span> <span class="bg-teal-100 text-teal-700 px-3 py-1.5 rounded-full text-xs font-medium">Test</span> <span class="bg-orange-100 text-orange-700 px-3 py-1.5 rounded-full text-xs font-medium">Zero-shot Prompting</span> <span class="bg-lime-100 text-lime-700 px-3 py-1.5 rounded-full text-xs font-medium">Few-shot Prompting</span> <span class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-medium">Chain-of-Thought</span> <span class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-full text-xs font-medium">Iterasi</span>
+      </div>
+     </div><!-- Peta Konsep -->
+     <div class="glass-card rounded-2xl p-6 mt-6">
+      <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2"><i data-lucide="git-branch" class="w-5 h-5 text-purple-500"></i> Peta Konsep Bab 4</h3>
+      <div class="flex flex-col items-center gap-3">
+       <div class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-2xl font-bold text-sm text-center shadow-lg">
+        Integrasi Prompt Engineering &amp; Design Thinking
+       </div>
+       <div class="w-px h-6 bg-gray-300"></div>
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 w-full">
+        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-center text-xs font-medium text-indigo-700">
+         A. Konsep Dasar Prompt Engineering
+        </div>
+        <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-center text-xs font-medium text-purple-700">
+         B. Teknik Prompt Engineering
+        </div>
+        <div class="bg-fuchsia-50 border border-fuchsia-200 rounded-xl p-3 text-center text-xs font-medium text-fuchsia-700">
+         C. Design Thinking dalam KA
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-center text-xs font-medium text-blue-700">
+         D. Integrasi PE &amp; DT
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center text-xs font-medium text-emerald-700">
+         E. Studi Kasus &amp; Proyek
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Materi Utama -->
+   <section id="materi" class="px-4 py-16">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="book-open" class="w-4 h-4"></i> MATERI PEMBELAJARAN
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Materi Inti Bab 4</h2>
+     </div><!-- Materi Tabs -->
+     <div class="flex flex-wrap justify-center gap-2 mb-8"><button class="tab-btn active px-4 py-2 rounded-xl text-xs font-semibold" data-tab="tab-a">A. Prompt Engineering</button> <button class="tab-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/50" data-tab="tab-b">B. Teknik Prompting</button> <button class="tab-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/50" data-tab="tab-c">C. Design Thinking</button> <button class="tab-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/50" data-tab="tab-d">D. Integrasi PE &amp; DT</button> <button class="tab-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/50" data-tab="tab-e">E. Studi Kasus</button>
+     </div><!-- Tab A -->
+     <div id="tab-a" class="tab-content">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+       <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">A</span> Konsep Dasar Prompt Engineering</h3>
+       <div class="space-y-6 text-gray-600 leading-relaxed text-sm">
+        <div>
+         <h4 class="font-bold text-gray-800 text-base mb-2">Apa itu Prompt Engineering?</h4>
+         <p>Prompt Engineering adalah seni dan ilmu merancang instruksi (prompt) yang efektif untuk berkomunikasi dengan model kecerdasan artifisial, khususnya <strong>Large Language Model (LLM)</strong> seperti ChatGPT, Google Gemini, dan Bing AI. Tujuannya adalah agar KA dapat memberikan respons yang akurat, relevan, dan bermanfaat sesuai kebutuhan pengguna.</p>
+        </div>
+        <div class="bg-indigo-50 rounded-xl p-5 border border-indigo-100">
+         <h4 class="font-bold text-indigo-800 mb-2">🤔 Mengapa Prompt Engineering Penting?</h4>
+         <ul class="space-y-2">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0"></i><span>Kualitas output KA sangat bergantung pada kualitas input (prompt) yang diberikan.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0"></i><span>Prompt yang baik menghemat waktu dan menghasilkan respons yang lebih tepat.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0"></i><span>Memahami cara kerja KA membantu kita memanfaatkannya secara optimal.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0"></i><span>Prompt engineering menjadi keterampilan penting di era KA generatif.</span></li>
+         </ul>
+        </div>
+        <div>
+         <h4 class="font-bold text-gray-800 text-base mb-3">Komponen Prompt yang Baik</h4>
+         <div class="grid sm:grid-cols-2 gap-3">
+          <div class="bg-white/60 rounded-xl p-4 border border-gray-100">
+           <div class="font-semibold text-indigo-600 mb-1">
+            🎯 Konteks (Context)
+           </div>
+           <p class="text-xs text-gray-500">Informasi latar belakang yang membantu KA memahami situasi. Contoh: "Saya adalah siswa kelas X SMA..."</p>
+          </div>
+          <div class="bg-white/60 rounded-xl p-4 border border-gray-100">
+           <div class="font-semibold text-purple-600 mb-1">
+            📝 Instruksi (Instruction)
+           </div>
+           <p class="text-xs text-gray-500">Perintah jelas tentang apa yang diinginkan. Contoh: "Buatkan ringkasan dalam 5 poin..."</p>
+          </div>
+          <div class="bg-white/60 rounded-xl p-4 border border-gray-100">
+           <div class="font-semibold text-fuchsia-600 mb-1">
+            📊 Data Input
+           </div>
+           <p class="text-xs text-gray-500">Data atau informasi yang perlu diproses oleh AI. Contoh: teks, angka, atau deskripsi masalah.</p>
+          </div>
+          <div class="bg-white/60 rounded-xl p-4 border border-gray-100">
+           <div class="font-semibold text-blue-600 mb-1">
+            📋 Format Output
+           </div>
+           <p class="text-xs text-gray-500">Spesifikasi format respons yang diharapkan. Contoh: "Sajikan dalam bentuk tabel..."</p>
+          </div>
+         </div>
+        </div>
+        <div>
+         <h4 class="font-bold text-gray-800 text-base mb-2">Cara Kerja LLM</h4>
+         <p>Large Language Model bekerja dengan cara memprediksi kata berikutnya berdasarkan pola bahasa yang dipelajari dari miliaran teks. LLM dilatih menggunakan teknik <em>deep learning</em> dengan arsitektur <strong>Transformer</strong>. Proses ini melibatkan:</p>
+         <div class="mt-3 flex flex-col gap-2">
+          <div class="flex items-center gap-3 bg-white/60 rounded-xl px-4 py-3 border border-gray-100"><span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">1</span> <span class="text-sm"><strong>Tokenisasi</strong> — Teks dipecah menjadi unit-unit kecil (token)</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/60 rounded-xl px-4 py-3 border border-gray-100"><span class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">2</span> <span class="text-sm"><strong>Embedding</strong> — Token diubah menjadi representasi numerik (vektor)</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/60 rounded-xl px-4 py-3 border border-gray-100"><span class="w-8 h-8 rounded-lg bg-fuchsia-100 flex items-center justify-center text-fuchsia-600 font-bold text-xs">3</span> <span class="text-sm"><strong>Attention Mechanism</strong> — Model menentukan hubungan antar kata</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/60 rounded-xl px-4 py-3 border border-gray-100"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">4</span> <span class="text-sm"><strong>Generasi</strong> — Model memprediksi dan menghasilkan teks output</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Tab B -->
+     <div id="tab-b" class="tab-content hidden">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+       <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">B</span> Teknik-Teknik Prompt Engineering</h3>
+       <div class="space-y-5"><!-- Accordion Teknik -->
+        <div class="accordion-item"><button class="accordion-toggle w-full flex items-center justify-between bg-white/60 rounded-xl px-5 py-4 border border-gray-100 hover:bg-white/80 transition text-left">
+          <div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">1</span>
+           <div>
+            <div class="font-bold text-gray-800 text-sm">
+             Zero-shot Prompting
+            </div>
+            <div class="text-xs text-gray-400">
+             Tanpa contoh, langsung instruksi
+            </div>
+           </div>
+          </div><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i> </button>
+         <div class="accordion-content">
+          <div class="px-5 py-4 text-sm text-gray-600 space-y-3">
+           <p>Zero-shot prompting adalah teknik memberikan instruksi langsung kepada KA <strong>tanpa memberikan contoh</strong>. KA mengandalkan pengetahuan yang sudah dimilikinya untuk merespons.</p>
+           <div class="prompt-demo rounded-xl p-4 text-xs">
+            <div class="text-indigo-300 mb-1">
+             // Contoh Zero-shot Prompt:
+            </div>
+            <div class="text-green-300">
+             "Jelaskan konsep fotosintesis dalam 3 kalimat sederhana."
+            </div>
+           </div>
+           <p><strong>Kelebihan:</strong> Sederhana, cepat. <strong>Kekurangan:</strong> Hasil bisa kurang spesifik untuk tugas kompleks.</p>
+          </div>
+         </div>
+        </div>
+        <div class="accordion-item"><button class="accordion-toggle w-full flex items-center justify-between bg-white/60 rounded-xl px-5 py-4 border border-gray-100 hover:bg-white/80 transition text-left">
+          <div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">2</span>
+           <div>
+            <div class="font-bold text-gray-800 text-sm">
+             Few-shot Prompting
+            </div>
+            <div class="text-xs text-gray-400">
+             Memberikan beberapa contoh sebagai panduan
+            </div>
+           </div>
+          </div><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i> </button>
+         <div class="accordion-content">
+          <div class="px-5 py-4 text-sm text-gray-600 space-y-3">
+           <p>Few-shot prompting adalah teknik memberikan <strong>beberapa contoh</strong> sebelum memberikan tugas yang sebenarnya. Contoh-contoh ini membantu KA memahami pola dan format yang diinginkan.</p>
+           <div class="prompt-demo rounded-xl p-4 text-xs">
+            <div class="text-indigo-300 mb-1">
+             // Contoh Few-shot Prompt:
+            </div>
+            <div class="text-green-300">
+             "Klasifikasikan sentimen berikut:
+            </div>
+            <div class="text-yellow-300">
+             'Makanannya enak sekali!' → Positif
+            </div>
+            <div class="text-yellow-300">
+             'Pelayanannya buruk.' → Negatif
+            </div>
+            <div class="text-yellow-300">
+             'Tempatnya biasa saja.' → Netral
+            </div>
+            <div class="text-green-300 mt-1">
+             Sekarang klasifikasikan: 'Saya sangat senang!'"
+            </div>
+           </div>
+           <p><strong>Kelebihan:</strong> Lebih akurat, KA memahami pola. <strong>Kekurangan:</strong> Prompt lebih panjang.</p>
+          </div>
+         </div>
+        </div>
+        <div class="accordion-item"><button class="accordion-toggle w-full flex items-center justify-between bg-white/60 rounded-xl px-5 py-4 border border-gray-100 hover:bg-white/80 transition text-left">
+          <div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-fuchsia-100 flex items-center justify-center text-fuchsia-600 font-bold text-xs">3</span>
+           <div>
+            <div class="font-bold text-gray-800 text-sm">
+             Chain-of-Thought (CoT) Prompting
+            </div>
+            <div class="text-xs text-gray-400">
+             Memandu KA berpikir langkah demi langkah
+            </div>
+           </div>
+          </div><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i> </button>
+         <div class="accordion-content">
+          <div class="px-5 py-4 text-sm text-gray-600 space-y-3">
+           <p>Chain-of-Thought prompting meminta KA untuk <strong>menunjukkan langkah-langkah penalaran</strong> sebelum memberikan jawaban akhir. Sangat efektif untuk masalah matematika dan logika.</p>
+           <div class="prompt-demo rounded-xl p-4 text-xs">
+            <div class="text-indigo-300 mb-1">
+             // Contoh CoT Prompt:
+            </div>
+            <div class="text-green-300">
+             "Sebuah toko menjual 15 buku pada hari Senin dan 23 buku pada hari Selasa. Jika harga per buku Rp25.000, berapa total pendapatan? Jelaskan langkah perhitungannya."
+            </div>
+           </div>
+           <p><strong>Kelebihan:</strong> Hasil lebih akurat, proses transparan. <strong>Kekurangan:</strong> Respons lebih panjang.</p>
+          </div>
+         </div>
+        </div>
+        <div class="accordion-item"><button class="accordion-toggle w-full flex items-center justify-between bg-white/60 rounded-xl px-5 py-4 border border-gray-100 hover:bg-white/80 transition text-left">
+          <div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">4</span>
+           <div>
+            <div class="font-bold text-gray-800 text-sm">
+             Role-based Prompting
+            </div>
+            <div class="text-xs text-gray-400">
+             Memberikan peran spesifik pada KA
+            </div>
+           </div>
+          </div><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i> </button>
+         <div class="accordion-content">
+          <div class="px-5 py-4 text-sm text-gray-600 space-y-3">
+           <p>Role-based prompting memberikan <strong>peran atau persona tertentu</strong> kepada KA agar respons lebih sesuai konteks dan keahlian yang dibutuhkan.</p>
+           <div class="prompt-demo rounded-xl p-4 text-xs">
+            <div class="text-indigo-300 mb-1">
+             // Contoh Role-based Prompt:
+            </div>
+            <div class="text-green-300">
+             "Bertindaklah sebagai guru Biologi SMA yang ramah. Jelaskan proses mitosis kepada siswa kelas X menggunakan analogi sederhana yang mudah dipahami."
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="accordion-item"><button class="accordion-toggle w-full flex items-center justify-between bg-white/60 rounded-xl px-5 py-4 border border-gray-100 hover:bg-white/80 transition text-left">
+          <div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">5</span>
+           <div>
+            <div class="font-bold text-gray-800 text-sm">
+             Iterative Prompting
+            </div>
+            <div class="text-xs text-gray-400">
+             Menyempurnakan prompt secara bertahap
+            </div>
+           </div>
+          </div><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i> </button>
+         <div class="accordion-content">
+          <div class="px-5 py-4 text-sm text-gray-600 space-y-3">
+           <p>Iterative prompting adalah proses <strong>memperbaiki prompt secara berulang</strong> berdasarkan evaluasi hasil sebelumnya hingga mendapatkan respons optimal.</p>
+           <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 bg-white/60 rounded-lg px-3 py-2 border border-gray-100"><span class="text-xs font-bold text-gray-400">v1</span> <span class="text-xs text-gray-600">"Buatkan cerita." → <span class="text-red-400">Terlalu umum</span></span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/60 rounded-lg px-3 py-2 border border-gray-100"><span class="text-xs font-bold text-gray-400">v2</span> <span class="text-xs text-gray-600">"Buatkan cerita fiksi ilmiah." → <span class="text-yellow-500">Lebih baik</span></span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/60 rounded-lg px-3 py-2 border border-gray-100"><span class="text-xs font-bold text-emerald-400">v3</span> <span class="text-xs text-gray-600">"Buatkan cerita fiksi ilmiah 500 kata tentang remaja yang menemukan KA di hutan, dengan ending twist." → <span class="text-emerald-500">Optimal!</span></span>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Tab C -->
+     <div id="tab-c" class="tab-content hidden">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+       <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500 to-fuchsia-600 flex items-center justify-center text-white text-sm font-bold">C</span> Design Thinking dalam Konteks KA</h3>
+       <div class="space-y-6 text-gray-600 leading-relaxed text-sm">
+        <p>Design Thinking adalah pendekatan pemecahan masalah yang berpusat pada manusia (<em>human-centered</em>). Dalam konteks KA, Design Thinking membantu kita memastikan bahwa solusi yang dikembangkan benar-benar menjawab kebutuhan pengguna, bukan sekadar menampilkan teknologi canggih.</p>
+        <h4 class="font-bold text-gray-800 text-base mb-3">5 Tahap Design Thinking</h4><!-- DT Stages Timeline -->
+        <div class="space-y-6">
+         <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+           <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center text-white shadow-lg flex-shrink-0"><i data-lucide="heart" class="w-5 h-5"></i>
+           </div>
+           <div class="w-px flex-1 bg-gray-200 mt-2"></div>
+          </div>
+          <div class="pb-6">
+           <h5 class="font-bold text-gray-800">1. Empathize (Berempati)</h5>
+           <p class="text-gray-500 mt-1">Memahami kebutuhan, masalah, dan perasaan pengguna melalui observasi, wawancara, dan riset. Dalam konteks KA: mengidentifikasi masalah nyata yang bisa diselesaikan dengan bantuan KA.</p>
+           <div class="bg-red-50 rounded-lg p-3 mt-2 border border-red-100 text-xs"><strong>Contoh:</strong> Mewawancarai petani tentang kesulitan mendeteksi penyakit tanaman → Solusi: KA pendeteksi penyakit tanaman via foto.
+           </div>
+          </div>
+         </div>
+         <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+           <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white shadow-lg flex-shrink-0"><i data-lucide="crosshair" class="w-5 h-5"></i>
+           </div>
+           <div class="w-px flex-1 bg-gray-200 mt-2"></div>
+          </div>
+          <div class="pb-6">
+           <h5 class="font-bold text-gray-800">2. Define (Mendefinisikan)</h5>
+           <p class="text-gray-500 mt-1">Merumuskan masalah secara jelas dan spesifik berdasarkan temuan dari tahap empati. Membuat <em>problem statement</em> yang fokus.</p>
+           <div class="bg-amber-50 rounded-lg p-3 mt-2 border border-amber-100 text-xs"><strong>Contoh Problem Statement:</strong> "Petani kecil membutuhkan cara cepat dan murah untuk mengidentifikasi penyakit tanaman agar bisa mengambil tindakan tepat waktu."
+           </div>
+          </div>
+         </div>
+         <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+           <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center text-white shadow-lg flex-shrink-0"><i data-lucide="zap" class="w-5 h-5"></i>
+           </div>
+           <div class="w-px flex-1 bg-gray-200 mt-2"></div>
+          </div>
+          <div class="pb-6">
+           <h5 class="font-bold text-gray-800">3. Ideate (Mengideasi)</h5>
+           <p class="text-gray-500 mt-1">Menghasilkan sebanyak mungkin ide solusi tanpa menghakimi. Brainstorming, mind mapping, dan teknik kreatif lainnya digunakan di tahap ini.</p>
+           <div class="bg-green-50 rounded-lg p-3 mt-2 border border-green-100 text-xs"><strong>Teknik Ideasi:</strong> Brainstorming, SCAMPER, Mind Mapping, Crazy 8s
+           </div>
+          </div>
+         </div>
+         <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+           <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white shadow-lg flex-shrink-0"><i data-lucide="box" class="w-5 h-5"></i>
+           </div>
+           <div class="w-px flex-1 bg-gray-200 mt-2"></div>
+          </div>
+          <div class="pb-6">
+           <h5 class="font-bold text-gray-800">4. Prototype (Membuat Prototipe)</h5>
+           <p class="text-gray-500 mt-1">Membuat versi sederhana dari solusi untuk diuji. Dalam konteks KA, ini bisa berupa membuat prompt yang dirancang dengan baik dan menguji hasilnya.</p>
+           <div class="bg-blue-50 rounded-lg p-3 mt-2 border border-blue-100 text-xs"><strong>Contoh:</strong> Membuat serangkaian prompt KA untuk mendiagnosis penyakit tanaman berdasarkan deskripsi gejala.
+           </div>
+          </div>
+         </div>
+         <div class="flex gap-4">
+          <div class="flex flex-col items-center">
+           <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white shadow-lg flex-shrink-0"><i data-lucide="flask-conical" class="w-5 h-5"></i>
+           </div>
+          </div>
+          <div>
+           <h5 class="font-bold text-gray-800">5. Test (Menguji)</h5>
+           <p class="text-gray-500 mt-1">Menguji prototipe dengan pengguna nyata, mengumpulkan umpan balik, dan melakukan perbaikan iteratif. Proses ini dapat diulang berkali-kali.</p>
+           <div class="bg-purple-50 rounded-lg p-3 mt-2 border border-purple-100 text-xs"><strong>Kunci:</strong> Tidak ada desain yang sempurna pada percobaan pertama — iterasi adalah bagian penting dari proses.
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Tab D -->
+     <div id="tab-d" class="tab-content hidden">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+       <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">D</span> Integrasi Prompt Engineering &amp; Design Thinking</h3>
+       <div class="space-y-6 text-gray-600 leading-relaxed text-sm">
+        <p>Integrasi kedua pendekatan ini menciptakan kerangka kerja yang kuat: <strong>Design Thinking</strong> memastikan kita memecahkan masalah yang tepat, sementara <strong>Prompt Engineering</strong> memastikan kita memanfaatkan KA secara efektif sebagai alat solusi.</p>
+        <div class="overflow-x-auto">
+         <table class="w-full text-xs border-collapse">
+          <thead>
+           <tr class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+            <th class="p-3 rounded-tl-xl text-left">Tahap DT</th>
+            <th class="p-3 text-left">Peran Prompt Engineering</th>
+            <th class="p-3 rounded-tr-xl text-left">Contoh Prompt</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="bg-white/40 border-b border-gray-100">
+            <td class="p-3 font-semibold text-red-600">Empathize</td>
+            <td class="p-3">Riset masalah pengguna dengan KA</td>
+            <td class="p-3 font-mono text-xs">"Apa tantangan utama petani kecil di Indonesia?"</td>
+           </tr>
+           <tr class="bg-white/20 border-b border-gray-100">
+            <td class="p-3 font-semibold text-amber-600">Define</td>
+            <td class="p-3">Merumuskan masalah dengan bantuan KA</td>
+            <td class="p-3 font-mono text-xs">"Bantu saya merumuskan problem statement dari data wawancara berikut..."</td>
+           </tr>
+           <tr class="bg-white/40 border-b border-gray-100">
+            <td class="p-3 font-semibold text-green-600">Ideate</td>
+            <td class="p-3">Brainstorming ide solusi KA</td>
+            <td class="p-3 font-mono text-xs">"Berikan 10 ide solusi berbasis KA untuk masalah deteksi penyakit tanaman."</td>
+           </tr>
+           <tr class="bg-white/20 border-b border-gray-100">
+            <td class="p-3 font-semibold text-blue-600">Prototype</td>
+            <td class="p-3">Membuat prompt sebagai prototipe</td>
+            <td class="p-3 font-mono text-xs">"Bertindaklah sebagai ahli pertanian. Dari gejala berikut, identifikasi penyakitnya..."</td>
+           </tr>
+           <tr class="bg-white/40">
+            <td class="p-3 font-semibold text-purple-600 rounded-bl-xl">Test</td>
+            <td class="p-3">Mengevaluasi dan memperbaiki prompt</td>
+            <td class="p-3 font-mono text-xs rounded-br-xl">"Evaluasi jawaban sebelumnya. Apakah sudah akurat? Bagaimana cara memperbaikinya?"</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+         <h4 class="font-bold text-blue-800 mb-2">💡 Prinsip Kunci Integrasi</h4>
+         <ul class="space-y-2">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0"></i><span><strong>Human-centered:</strong> KA adalah alat, bukan tujuan. Fokus pada kebutuhan pengguna.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0"></i><span><strong>Iteratif:</strong> Terus perbaiki prompt berdasarkan evaluasi dan umpan balik.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0"></i><span><strong>Kolaboratif:</strong> Manusia dan KA bekerja bersama, bukan KA menggantikan manusia.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0"></i><span><strong>Etis:</strong> Pertimbangkan dampak sosial dan bias dalam penggunaan KA.</span></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div><!-- Tab E -->
+     <div id="tab-e" class="tab-content hidden">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+       <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">E</span> Studi Kasus &amp; Penerapan</h3>
+       <div class="space-y-6 text-gray-600 leading-relaxed text-sm">
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100">
+         <h4 class="font-bold text-emerald-800 mb-3">📋 Studi Kasus: KA untuk Pendidikan</h4>
+         <p><strong>Masalah:</strong> Siswa SMA kesulitan memahami materi Fisika yang abstrak dan membutuhkan penjelasan yang disesuaikan dengan gaya belajar masing-masing.</p>
+         <div class="mt-3 space-y-2">
+          <div class="bg-white/70 rounded-lg p-3"><span class="font-semibold text-red-600 text-xs">Empathize:</span> <span class="text-xs"> Wawancara siswa → Banyak yang belajar visual, butuh analogi kehidupan nyata.</span>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3"><span class="font-semibold text-amber-600 text-xs">Define:</span> <span class="text-xs"> "Siswa membutuhkan tutor KA yang bisa menjelaskan Fisika dengan analogi visual."</span>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3"><span class="font-semibold text-green-600 text-xs">Ideate:</span> <span class="text-xs"> Chatbot tutor Fisika, generator soal adaptif, visualisasi konsep otomatis.</span>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3"><span class="font-semibold text-blue-600 text-xs">Prototype:</span> <span class="text-xs"> Prompt: "Jelaskan Hukum Newton ke-3 menggunakan analogi permainan sepak bola, untuk siswa kelas X."</span>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3"><span class="font-semibold text-purple-600 text-xs">Test:</span> <span class="text-xs"> Uji coba dengan 10 siswa → Perbaiki prompt berdasarkan umpan balik → Iterasi sampai optimal.</span>
+          </div>
+         </div>
+        </div>
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+         <h4 class="font-bold text-blue-800 mb-3">🌍 Penerapan di Berbagai Bidang</h4>
+         <div class="grid sm:grid-cols-2 gap-3">
+          <div class="bg-white/70 rounded-lg p-3">
+           <div class="font-semibold text-sm">
+            🏥 Kesehatan
+           </div>
+           <p class="text-xs text-gray-500 mt-1">KA asisten diagnosis awal, chatbot informasi kesehatan, analisis gejala penyakit.</p>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3">
+           <div class="font-semibold text-sm">
+            🌾 Pertanian
+           </div>
+           <p class="text-xs text-gray-500 mt-1">Deteksi hama/penyakit tanaman, prediksi cuaca, rekomendasi pemupukan.</p>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3">
+           <div class="font-semibold text-sm">
+            🎓 Pendidikan
+           </div>
+           <p class="text-xs text-gray-500 mt-1">Tutor personal KA, pembuat soal otomatis, umpan balik tugas.</p>
+          </div>
+          <div class="bg-white/70 rounded-lg p-3">
+           <div class="font-semibold text-sm">
+            🏪 UMKM
+           </div>
+           <p class="text-xs text-gray-500 mt-1">Copywriting produk, chatbot layanan pelanggan, analisis tren pasar.</p>
+          </div>
+         </div>
+        </div>
+        <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-5 border border-amber-100">
+         <h4 class="font-bold text-amber-800 mb-2">⚖️ Etika Penggunaan KA</h4>
+         <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span><strong>Bias:</strong> KA bisa mereproduksi bias dari data pelatihan. Selalu evaluasi kritis.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span><strong>Privasi:</strong> Jangan masukkan data pribadi sensitif ke dalam prompt.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span><strong>Kejujuran:</strong> Selalu nyatakan jika karya dibantu KA. Jangan plagiat.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span><strong>Verifikasi:</strong> KA bisa menghasilkan informasi salah (hallucination). Selalu periksa ulang.</span></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Prompt Lab (Interactive) -->
+   <section id="prompt" class="px-4 py-16">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-fuchsia-100 text-fuchsia-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="terminal" class="w-4 h-4"></i> PROMPT LAB INTERAKTIF
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Latihan Merancang Prompt</h2>
+      <p class="text-gray-500 mt-3 max-w-xl mx-auto">Bandingkan prompt sederhana vs prompt yang dirancang dengan baik, dan lihat perbedaan hasilnya!</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-6"><!-- Bad Prompt -->
+      <div class="glass-card rounded-2xl p-6">
+       <div class="flex items-center gap-2 mb-4"><span class="w-3 h-3 rounded-full bg-red-400"></span> <span class="font-bold text-gray-800 text-sm">❌ Prompt Kurang Baik</span>
+       </div>
+       <div class="prompt-demo rounded-xl p-4 text-xs mb-4"><span class="text-gray-400">User:</span><br><span class="text-red-300">"Jelaskan KA"</span>
+       </div>
+       <div class="bg-red-50 rounded-xl p-4 border border-red-100 text-xs text-gray-600"><span class="font-semibold text-red-600">Masalah:</span>
+        <ul class="mt-1 space-y-1 list-disc list-inside text-gray-500">
+         <li>Tidak ada konteks (untuk siapa?)</li>
+         <li>Tidak ada format output yang diinginkan</li>
+         <li>Terlalu umum, hasil bisa sangat panjang/tidak fokus</li>
+         <li>Tidak spesifik aspek KA yang dimaksud</li>
+        </ul>
+       </div>
+      </div><!-- Good Prompt -->
+      <div class="glass-card rounded-2xl p-6 ring-2 ring-emerald-200">
+       <div class="flex items-center gap-2 mb-4"><span class="w-3 h-3 rounded-full bg-emerald-400"></span> <span class="font-bold text-gray-800 text-sm">✅ Prompt Terstruktur</span>
+       </div>
+       <div class="prompt-demo rounded-xl p-4 text-xs mb-4"><span class="text-gray-400">User:</span><br><span class="text-green-300">"Bertindaklah sebagai guru Informatika SMA. Jelaskan konsep Kecerdasan Artifisial (KA) kepada siswa kelas X dalam 5 poin ringkas. Gunakan bahasa sederhana dan berikan 1 contoh penerapan KA dalam kehidupan sehari-hari untuk setiap poin."</span>
+       </div>
+       <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-100 text-xs text-gray-600"><span class="font-semibold text-emerald-600">Keunggulan:</span>
+        <ul class="mt-1 space-y-1 list-disc list-inside text-gray-500">
+         <li>✅ Ada peran (Role): guru Informatika</li>
+         <li>✅ Ada konteks: siswa kelas X</li>
+         <li>✅ Format output jelas: 5 poin ringkas</li>
+         <li>✅ Instruksi spesifik: bahasa sederhana + contoh</li>
+        </ul>
+       </div>
+      </div>
+     </div><!-- Prompt Builder -->
+     <div class="glass-card rounded-2xl p-6 sm:p-8 mt-8">
+      <h3 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2"><i data-lucide="wand-2" class="w-5 h-5 text-purple-500"></i> Prompt Builder — Coba Buat Promptmu!</h3>
+      <p class="text-sm text-gray-500 mb-5">Isi komponen di bawah ini untuk membuat prompt yang terstruktur:</p>
+      <div class="grid sm:grid-cols-2 gap-4 mb-5">
+       <div><label class="text-xs font-semibold text-gray-600 mb-1 block">🎭 Peran (Role)</label> <input id="pb-role" type="text" placeholder="Contoh: guru Biologi SMA" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none bg-white/60 transition">
+       </div>
+       <div><label class="text-xs font-semibold text-gray-600 mb-1 block">👤 Konteks Pengguna</label> <input id="pb-context" type="text" placeholder="Contoh: siswa kelas X" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none bg-white/60 transition">
+       </div>
+       <div><label class="text-xs font-semibold text-gray-600 mb-1 block">📝 Instruksi/Tugas</label> <input id="pb-task" type="text" placeholder="Contoh: jelaskan proses fotosintesis" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none bg-white/60 transition">
+       </div>
+       <div><label class="text-xs font-semibold text-gray-600 mb-1 block">📋 Format Output</label> <input id="pb-format" type="text" placeholder="Contoh: dalam 5 poin dengan analogi" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none bg-white/60 transition">
+       </div>
+      </div><button id="pb-generate" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"> <i data-lucide="sparkles" class="w-4 h-4"></i> Generate Prompt </button>
+      <div id="pb-result" class="hidden mt-5 prompt-demo rounded-xl p-5 text-sm">
+       <div class="text-indigo-300 text-xs mb-2">
+        // Prompt yang dihasilkan:
+       </div>
+       <div id="pb-output" class="text-green-300"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Game Edukatif -->
+   <section id="game" class="px-4 py-16">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="zap" class="w-4 h-4"></i> GAME CHALLENGE
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Prompt Quest 🎮</h2>
+      <p class="text-gray-500 mt-3 max-w-xl mx-auto">Tantangan real-time: Desain prompt terbaik dalam 3 menit! Raih poin dan naik ke leaderboard.</p>
+     </div>
+     <div class="grid lg:grid-cols-3 gap-6 mb-8">
+      <div class="glass-card rounded-2xl p-5 text-center">
+       <div class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent" id="game-score">
+        0
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Total Poin
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-5 text-center">
+       <div class="text-3xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent" id="game-streak">
+        0
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Streak 🔥
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-5 text-center">
+       <div class="text-3xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent" id="game-level">
+        1
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Level
+       </div>
+      </div>
+     </div>
+     <div id="game-main" class="glass-card rounded-2xl p-6 sm:p-8">
+      <div id="game-content">
+       <div class="text-center">
+        <div class="text-6xl mb-4">
+         🎯
+        </div>
+        <h3 class="font-bold text-gray-800 text-xl mb-2">Siap Jadi Prompt Engineer Pro?</h3>
+        <p class="text-gray-500 text-sm mb-6 max-w-md mx-auto">Setiap level, kamu akan mendapat skenario nyata. Desain prompt terbaik dalam 3 menit. Semakin baik prompt, semakin banyak poin!</p><button id="game-start-btn" class="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-8 py-3 rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 mx-auto"> <i data-lucide="play" class="w-5 h-5"></i> Mulai Game </button>
+       </div>
+      </div>
+     </div>
+     <div class="glass-card rounded-2xl p-6 mt-8">
+      <h3 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2"><i data-lucide="crown" class="w-5 h-5 text-amber-500"></i> Top Prompt Engineers</h3>
+      <div id="leaderboard" class="space-y-2">
+       <div class="flex items-center justify-between rounded-lg px-4 py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100">
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">👑</span>
+         <div>
+          <div class="font-bold text-sm text-gray-800">
+           You
+          </div>
+          <div class="text-xs text-gray-500">
+           Mulai sekarang!
+          </div>
+         </div>
+        </div>
+        <div class="text-right">
+         <div id="your-rank-score" class="font-bold text-lg text-amber-600">
+          0
+         </div>
+         <div class="text-xs text-gray-500">
+          poin
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Aktivitas -->
+   <section id="aktivitas" class="px-4 py-16">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="clipboard-list" class="w-4 h-4"></i> AKTIVITAS PEMBELAJARAN
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Aktivitas &amp; Proyek</h2>
+     </div>
+     <div class="space-y-6"><!-- Aktivitas 1 -->
+      <div class="glass-card rounded-2xl p-6">
+       <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
+         1
+        </div>
+        <div class="flex-1">
+         <h3 class="font-bold text-gray-800 text-lg">Aktivitas Individu: Eksplorasi Teknik Prompt</h3>
+         <p class="text-sm text-gray-500 mt-2">Praktikkan kelima teknik prompt engineering yang telah dipelajari:</p>
+         <div class="mt-3 space-y-2">
+          <div class="flex items-center gap-2 bg-white/50 rounded-lg px-3 py-2 text-xs text-gray-600 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-indigo-500"> <span>Buat 1 prompt zero-shot untuk topik pelajaran favoritmu</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/50 rounded-lg px-3 py-2 text-xs text-gray-600 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-indigo-500"> <span>Buat 1 prompt few-shot dengan minimal 3 contoh</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/50 rounded-lg px-3 py-2 text-xs text-gray-600 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-indigo-500"> <span>Buat 1 prompt chain-of-thought untuk soal matematika</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/50 rounded-lg px-3 py-2 text-xs text-gray-600 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-indigo-500"> <span>Buat 1 prompt role-based dengan persona tertentu</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/50 rounded-lg px-3 py-2 text-xs text-gray-600 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-indigo-500"> <span>Lakukan iterasi 3x pada salah satu prompt di atas</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Aktivitas 2 -->
+      <div class="glass-card rounded-2xl p-6">
+       <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
+         2
+        </div>
+        <div class="flex-1">
+         <h3 class="font-bold text-gray-800 text-lg">Aktivitas Kelompok: Design Thinking Challenge</h3>
+         <p class="text-sm text-gray-500 mt-2">Dalam kelompok 4-5 orang, identifikasi masalah nyata di sekolah/lingkunganmu dan rancang solusi berbasis KA menggunakan Design Thinking:</p>
+         <div class="grid sm:grid-cols-5 gap-2 mt-3">
+          <div class="bg-red-50 rounded-lg p-3 text-center text-xs border border-red-100">
+           <div class="font-bold text-red-600 mb-1">
+            ❤️ Empathize
+           </div>
+           <div class="text-gray-500">
+            Wawancara 5 orang
+           </div>
+          </div>
+          <div class="bg-amber-50 rounded-lg p-3 text-center text-xs border border-amber-100">
+           <div class="font-bold text-amber-600 mb-1">
+            🎯 Define
+           </div>
+           <div class="text-gray-500">
+            Rumuskan masalah
+           </div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-3 text-center text-xs border border-green-100">
+           <div class="font-bold text-green-600 mb-1">
+            💡 Ideate
+           </div>
+           <div class="text-gray-500">
+            5+ ide solusi KA
+           </div>
+          </div>
+          <div class="bg-blue-50 rounded-lg p-3 text-center text-xs border border-blue-100">
+           <div class="font-bold text-blue-600 mb-1">
+            📦 Prototype
+           </div>
+           <div class="text-gray-500">
+            Buat prompt KA
+           </div>
+          </div>
+          <div class="bg-purple-50 rounded-lg p-3 text-center text-xs border border-purple-100">
+           <div class="font-bold text-purple-600 mb-1">
+            🧪 Test
+           </div>
+           <div class="text-gray-500">
+            Uji &amp; iterasi
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Aktivitas 3 -->
+      <div class="glass-card rounded-2xl p-6">
+       <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
+         3
+        </div>
+        <div class="flex-1">
+         <h3 class="font-bold text-gray-800 text-lg">Proyek Akhir Bab: Portofolio Prompt Engineering</h3>
+         <p class="text-sm text-gray-500 mt-2">Buat portofolio digital berisi minimal 10 prompt terbaikmu beserta analisis hasilnya. Sertakan:</p>
+         <div class="mt-3 grid sm:grid-cols-2 gap-2 text-xs">
+          <div class="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-100"><i data-lucide="file-text" class="w-4 h-4 text-emerald-500"></i> <span>Prompt asli dan versi iterasinya</span>
+          </div>
+          <div class="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-100"><i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-500"></i> <span>Analisis kualitas respons AI</span>
+          </div>
+          <div class="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-100"><i data-lucide="tag" class="w-4 h-4 text-emerald-500"></i> <span>Label teknik yang digunakan</span>
+          </div>
+          <div class="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-100"><i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i> <span>Refleksi pembelajaran</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Kuis Interaktif -->
+   <section id="kuis" class="px-4 py-16">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 bg-rose-100 text-rose-700 rounded-full px-4 py-1.5 text-xs font-semibold mb-4"><i data-lucide="help-circle" class="w-4 h-4"></i> UJI PEMAHAMAN
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Kuis Interaktif</h2>
+      <p class="text-gray-500 mt-3">Pilih tingkat kesulitan dan uji pemahamanmu tentang materi Bab 4!</p>
+     </div>
+     <div id="level-selector" class="grid sm:grid-cols-3 gap-4 mb-8">
+      <button class="level-btn glass-card rounded-2xl p-6 text-center hover:ring-2 hover:ring-green-400 transition-all cursor-pointer" data-level="mudah" type="button">
+       <div class="text-4xl mb-3">
+        🟢
+       </div>
+       <div class="font-bold text-gray-800 mb-1">
+        MUDAH
+       </div>
+       <div class="text-xs text-gray-500">
+        10 soal dasar
+       </div>
+       <div class="text-xs font-semibold text-green-600 mt-2">
+        Max 100 poin
+       </div></button> <button class="level-btn glass-card rounded-2xl p-6 text-center hover:ring-2 hover:ring-yellow-400 transition-all cursor-pointer" data-level="sedang" type="button">
+       <div class="text-4xl mb-3">
+        🟡
+       </div>
+       <div class="font-bold text-gray-800 mb-1">
+        SEDANG
+       </div>
+       <div class="text-xs text-gray-500">
+        10 soal intermediate
+       </div>
+       <div class="text-xs font-semibold text-yellow-600 mt-2">
+        Max 200 poin
+       </div></button> <button class="level-btn glass-card rounded-2xl p-6 text-center hover:ring-2 hover:ring-red-400 transition-all cursor-pointer" data-level="sulit" type="button">
+       <div class="text-4xl mb-3">
+        🔴
+       </div>
+       <div class="font-bold text-gray-800 mb-1">
+        SULIT
+       </div>
+       <div class="text-xs text-gray-500">
+        10 soal advanced
+       </div>
+       <div class="text-xs font-semibold text-red-600 mt-2">
+        Max 300 poin
+       </div></button>
+     </div>
+     <div id="quiz-container"><!-- Quiz rendered by JS -->
+     </div>
+     <div id="quiz-result" class="hidden glass-card rounded-2xl p-8 text-center">
+      <div id="result-icon" class="text-6xl mb-4"></div>
+      <h3 id="result-title" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+      <p id="result-text" class="text-gray-500 mb-4"></p>
+      <div id="result-score" class="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2"></div>
+      <div id="result-difficulty" class="text-xs text-gray-500 mb-6"></div>
+      <div class="flex gap-3">
+       <button id="quiz-restart" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-2xl text-sm hover:shadow-lg hover:scale-105 transition-all"> <i data-lucide="rotate-ccw" class="w-4 h-4 inline mr-1"></i> Ulangi </button> <button id="quiz-change-level" class="flex-1 bg-white border-2 border-indigo-500 text-indigo-600 font-semibold px-6 py-3 rounded-2xl text-sm hover:bg-indigo-50 transition-all"> <i data-lucide="layers" class="w-4 h-4 inline mr-1"></i> Ubah Level </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="px-4 py-12 mt-8">
+    <div class="max-w-5xl mx-auto glass-card rounded-2xl p-8 text-center">
+     <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold mx-auto mb-4 shadow-lg">
+      B4
+     </div>
+     <h3 class="font-bold text-gray-800 mb-2">Bab 4 — Integrasi Prompt Engineering &amp; Design Thinking</h3>
+     <p class="text-sm text-gray-500 mb-4">Koding dan Kecerdasan Artifisial untuk SMA/MA Kelas X</p>
+     <div class="flex justify-center gap-4 text-xs text-gray-400"><span>📚 Kurikulum Merdeka</span> <span>•</span> <span>🇮🇩 Informatika</span> <span>•</span> <span>🤖 Babeh Opiq 76</span>
+     </div>
+    </div>
+   </footer>
+  </main>
+  <script>
+// === Konfigurasi Aplikasi ===
+const defaultConfig = {
+  site_title: 'AI & Design Thinking',
+  chapter_title: 'Integrasi Prompt Engineering & Design Thinking pada AI'
+};
+
+// === Header scroll ===
+var header = document.getElementById('header');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 50) {
+    header.classList.add('glass');
+    header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.05)';
+  } else {
+    header.classList.remove('glass');
+    header.style.boxShadow = 'none';
+    header.style.background = 'transparent';
+  }
+});
+
+// === Mobile menu ===
+var menuToggle = document.getElementById('menu-toggle');
+var mobileMenu = document.getElementById('mobile-menu');
+if (menuToggle) {
+  menuToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    mobileMenu.classList.toggle('hidden');
+  });
+}
+var mobLinks = document.querySelectorAll('.mob-link');
+for (var i = 0; i < mobLinks.length; i++) {
+  mobLinks[i].addEventListener('click', function(e) {
+    e.preventDefault();
+    mobileMenu.classList.add('hidden');
+    var href = this.getAttribute('href');
+    if (href && href.charAt(0) === '#') {
+      var target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+}
+
+// === Tabs ===
+var tabBtns = document.querySelectorAll('.tab-btn');
+for (var i = 0; i < tabBtns.length; i++) {
+  tabBtns[i].addEventListener('click', function() {
+    var allBtns = document.querySelectorAll('.tab-btn');
+    for (var j = 0; j < allBtns.length; j++) {
+      allBtns[j].classList.remove('active');
+      allBtns[j].classList.add('bg-white/50');
+    }
+    this.classList.add('active');
+    this.classList.remove('bg-white/50');
+    var tabId = this.getAttribute('data-tab');
+    var allContent = document.querySelectorAll('.tab-content');
+    for (var j = 0; j < allContent.length; j++) {
+      allContent[j].classList.add('hidden');
+    }
+    var targetTab = document.getElementById(tabId);
+    if (targetTab) targetTab.classList.remove('hidden');
+  });
+}
+
+// === Accordions ===
+var accToggles = document.querySelectorAll('.accordion-toggle');
+for (var i = 0; i < accToggles.length; i++) {
+  accToggles[i].addEventListener('click', function() {
+    var content = this.nextElementSibling;
+    var icon = this.querySelector('[data-lucide]');
+    var isOpen = content.classList.contains('open');
+    // Close all
+    var allContent = document.querySelectorAll('.accordion-content');
+    for (var j = 0; j < allContent.length; j++) {
+      allContent[j].classList.remove('open');
+    }
+    var allIcons = document.querySelectorAll('.accordion-toggle [data-lucide]');
+    for (var j = 0; j < allIcons.length; j++) {
+      allIcons[j].style.transform = '';
+    }
+    if (!isOpen) {
+      content.classList.add('open');
+      if (icon) icon.style.transform = 'rotate(180deg)';
+    }
+  });
+}
+
+// === Prompt Builder ===
+var pbGenBtn = document.getElementById('pb-generate');
+if (pbGenBtn) {
+  pbGenBtn.addEventListener('click', function() {
+    var role = document.getElementById('pb-role').value.trim();
+    var context = document.getElementById('pb-context').value.trim();
+    var task = document.getElementById('pb-task').value.trim();
+    var format = document.getElementById('pb-format').value.trim();
+    if (!task) {
+      document.getElementById('pb-result').classList.add('hidden');
+      return;
+    }
+    var prompt = '';
+    if (role) prompt += 'Bertindaklah sebagai ' + role + '. ';
+    prompt += task.charAt(0).toUpperCase() + task.slice(1);
+    if (context) prompt += ' untuk ' + context;
+    prompt += '.';
+    if (format) prompt += ' Sajikan ' + format + '.';
+    document.getElementById('pb-output').textContent = '"' + prompt + '"';
+    document.getElementById('pb-result').classList.remove('hidden');
+  });
+}
+
+// === Quiz Data dengan 3 Tingkatan (10 soal masing-masing) ===
+const quizLevels = {
+  mudah: [
+    { q: "Apa kepanjangan dari LLM?", opts: ["Learning Language Model", "Large Language Model", "Logic Learning Machine", "Linear Language Module"], ans: 1 },
+    { q: "Apa tujuan utama dari Prompt Engineering?", opts: ["Membuat AI lebih cerdas", "Merancang instruksi efektif agar AI memberikan respons optimal", "Mengganti pekerjaan manusia dengan AI", "Membuat program komputer baru"], ans: 1 },
+    { q: "Teknik prompting yang memberikan instruksi langsung tanpa contoh disebut...", opts: ["Few-shot Prompting", "Chain-of-Thought", "Zero-shot Prompting", "Role-based Prompting"], ans: 2 },
+    { q: "Apa komponen prompt yang menjelaskan format respons yang diharapkan?", opts: ["Konteks", "Instruksi", "Data Input", "Format Output"], ans: 3 },
+    { q: "Tahap pertama dalam Design Thinking adalah...", opts: ["Define", "Ideate", "Empathize", "Prototype"], ans: 2 },
+    { q: "Few-shot prompting menggunakan...", opts: ["Nol contoh", "Satu contoh", "Beberapa contoh", "Ratusan contoh"], ans: 2 },
+    { q: "Apa manfaat utama dari Chain-of-Thought Prompting?", opts: ["Membuat prompt lebih pendek", "Membimbing AI berpikir langkah demi langkah", "Menghemat waktu pengguna", "Mengurangi biaya API"], ans: 1 },
+    { q: "Dalam Design Thinking, tahap 'Empathize' melibatkan...", opts: ["Brainstorming ide", "Membuat prototipe", "Memahami kebutuhan pengguna", "Menguji solusi"], ans: 2 },
+    { q: "Apa fungsi dari komponen 'Konteks' dalam prompt?", opts: ["Menjelaskan apa yang diinginkan", "Memberikan informasi latar belakang", "Menentukan format output", "Membuat instruksi lebih singkat"], ans: 1 },
+    { q: "Role-based Prompting berarti...", opts: ["Memberikan peran spesifik pada AI", "Mengganti AI dengan peran manusia", "Hanya untuk aplikasi gaming", "Membuat AI berpikir seperti robot"], ans: 0 }
+  ],
+  sedang: [
+    { q: "Mengapa komponen 'Format Output' penting dalam prompt?", opts: ["Membuat prompt terlihat bagus", "Memastikan respons AI sesuai harapan pengguna", "Membuat AI lebih pintar", "Tidak terlalu penting"], ans: 1 },
+    { q: "Perbedaan utama zero-shot dan few-shot prompting adalah...", opts: ["Jumlah kata dalam prompt", "Ada atau tidaknya contoh dalam prompt", "Kecepatan respon AI", "Jumlah parameter AI"], ans: 1 },
+    { q: "Chain-of-Thought prompting sangat efektif untuk...", opts: ["Menulis cerita fiksi", "Masalah yang membutuhkan penalaran logis/matematis", "Terjemahan bahasa", "Membuat daftar belanja"], ans: 1 },
+    { q: "Dalam integrasi Design Thinking & Prompt Engineering, tahap 'Prototype' melibatkan...", opts: ["Wawancara pengguna", "Brainstorming ide solusi", "Membuat dan menguji prompt AI", "Merumuskan masalah dengan jelas"], ans: 2 },
+    { q: "Apa yang dimaksud dengan 'hallucination' pada AI?", opts: ["AI menjadi sadar dan berbahaya", "AI menghasilkan informasi yang tidak akurat atau salah", "AI menolak menjawab pertanyaan", "AI belajar sendiri tanpa pelatihan"], ans: 1 },
+    { q: "Iterative Prompting adalah teknik yang...", opts: ["Hanya digunakan sekali", "Memperbaiki prompt secara berulang hingga optimal", "Membuat prompt semakin panjang", "Tidak berguna untuk AI modern"], ans: 1 },
+    { q: "Dalam Design Thinking, tahap 'Test' memiliki tujuan untuk...", opts: ["Hanya mengecek AI bekerja", "Menguji prototipe dengan pengguna nyata dan mengumpulkan umpan balik", "Menyelesaikan proyek", "Menghitung biaya produksi"], ans: 1 },
+    { q: "Apa keuntungan menggunakan role-based prompting?", opts: ["Membuat prompt lebih panjang", "Respons AI lebih relevan dan sesuai konteks", "Mengurangi jumlah parameter", "Tidak ada keuntungan khusus"], ans: 1 },
+    { q: "Ketika AI menghasilkan informasi salah, langkah yang tepat adalah...", opts: ["Langsung percaya dan gunakan", "Verifikasi informasi terlebih dahulu", "Menghapus semua output AI", "Tidak perlu dikhawatirkan"], ans: 1 },
+    { q: "Dalam prompt yang baik, apa saja komponen minimal yang harus ada?", opts: ["Hanya instruksi", "Konteks, Instruksi, dan Format Output", "Hanya Format Output", "Tidak ada aturan spesifik"], ans: 1 }
+  ],
+  sulit: [
+    { q: "Bagaimana cara menggabungkan few-shot prompting dengan chain-of-thought secara efektif?", opts: ["Tidak bisa digabungkan", "Berikan contoh yang menunjukkan langkah-langkah penalaran", "Gunakan keduanya secara terpisah saja", "Pilih salah satu, jangan keduanya"], ans: 1 },
+    { q: "Dalam konteks Design Thinking yang terintegrasi dengan PE, mengapa tahap 'Empathize' kritis untuk kualitas prompt?", opts: ["Tidak ada hubungannya", "Memahami kebutuhan pengguna menghasilkan prompt yang lebih targeted", "Hanya untuk fase desain, bukan untuk PE", "Membuat AI lebih cepat"], ans: 1 },
+    { q: "Apa implikasi etika dari 'hallucination' AI dalam aplikasi layanan kesehatan atau hukum?", opts: ["Tidak ada masalah", "Bisa menyebabkan kerugian serius, memerlukan verifikasi ketat", "AI tidak pernah salah di bidang ini", "Hanya perhatian minor"], ans: 1 },
+    { q: "Bagaimana cara menggunakan iterative prompting untuk mengatasi bias dalam output AI?", opts: ["Bias tidak bisa diatasi", "Uji hasil, identifikasi bias, ubah prompt untuk menghilangkan bias, ulangi", "Gunakan prompt yang lebih panjang", "Bias tidak penting untuk diperhatikan"], ans: 1 },
+    { q: "Apa perbedaan strategis antara zero-shot untuk prototyping cepat vs few-shot untuk produksi?", opts: ["Tidak ada perbedaan", "Zero-shot lebih cepat namun kurang akurat; few-shot akurat tapi butuh persiapan contoh", "Few-shot selalu lebih buruk", "Zero-shot untuk pemula, few-shot tidak berguna"], ans: 1 },
+    { q: "Dalam fase 'Test' Design Thinking dengan AI, apa metrik kesuksesan yang tepat selain akurasi?", opts: ["Hanya perlu akurasi", "User satisfaction, relevansi konteks, efisiensi waktu, feedback loop", "Kecepatan server saja", "Tidak perlu metrik apapun"], ans: 1 },
+    { q: "Bagaimana mendesain prompt yang bisa menangani edge cases dan skenario tidak terduga?", opts: ["Edge cases tidak perlu dipikirkan", "Gunakan chain-of-thought + few-shot dengan contoh edge cases", "Buat prompt yang sangat panjang", "Tidak ada cara yang efektif"], ans: 1 },
+    { q: "Apa hubungan antara komponen 'Data Input' dan kualitas output dalam prompt engineering?", opts: ["Data input tidak penting", "Data input berkualitas tinggi sangat mempengaruhi output AI", "Hanya konteks yang penting", "AI tidak butuh data input"], ans: 1 },
+    { q: "Dalam integrasi DT & PE, bagaimana cara memastikan solusi berbasis AI tetap human-centered?", opts: ["Fokus pada teknologi saja", "Iterasi berdasarkan user feedback, maintainin empati user, validasi dengan stakeholder", "AI pasti human-centered", "Tidak perlu dipikirkan"], ans: 1 },
+    { q: "Apa tantangan utama dalam scaling prompt engineering ke produksi dan bagaimana mengatasinya?", opts: ["Tidak ada tantangan", "Konsistensi, bias, maintenance, overhead biaya — butuh governance framework", "Scaling tidak mungkin", "Hanya masalah teknis sepele"], ans: 1 }
+  ]
+};
+
+const levelInfo = {
+  mudah: { emoji: '🟢', label: 'MUDAH', multiplier: 10 },
+  sedang: { emoji: '🟡', label: 'SEDANG', multiplier: 20 },
+  sulit: { emoji: '🔴', label: 'SULIT', multiplier: 30 }
+};
+
+let currentLevel = null;
+let currentQ = 0, score = 0, answered = false;
+
+function renderQuiz() {
+  var container = document.getElementById('quiz-container');
+  var quizData = quizLevels[currentLevel];
+  if (currentQ >= quizData.length) { showResult(); return; }
+  var q = quizData[currentQ];
+  answered = false;
+  var info = levelInfo[currentLevel];
+  var maxPoints = quizData.length * info.multiplier;
+  
+  var htmlContent = '<div class="glass-card rounded-2xl p-6 sm:p-8"><div class="flex items-center justify-between mb-6"><div class="flex items-center gap-2"><span class="text-2xl">' + info.emoji + '</span><div><span class="text-xs font-semibold text-gray-400 block">Soal ' + (currentQ + 1) + ' / ' + quizData.length + '</span><span class="text-xs font-bold text-gray-500">' + info.label + '</span></div></div><span class="text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">Skor: ' + score + '/' + maxPoints + '</span></div><div class="w-full bg-gray-200 rounded-full h-2 mb-6"><div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all" style="width:' + (((currentQ)/quizData.length)*100) + '%"></div></div><h3 class="font-bold text-gray-800 text-lg mb-5">' + q.q + '</h3><div class="space-y-3" id="quiz-options">';
+  
+  for (var i = 0; i < q.opts.length; i++) {
+    var o = q.opts[i];
+    htmlContent += '<div class="quiz-option rounded-xl px-5 py-3.5 flex items-center gap-3 cursor-pointer" data-idx="' + i + '" type="button"><span class="w-8 h-8 rounded-lg bg-white/60 flex items-center justify-center font-bold text-sm text-gray-500 flex-shrink-0 border border-gray-200">' + String.fromCharCode(65+i) + '</span><span class="text-sm text-gray-700">' + o + '</span></div>';
+  }
+  
+  htmlContent += '</div><div id="quiz-feedback" class="hidden mt-5 rounded-xl p-4 text-sm"></div><button id="quiz-next" class="hidden mt-5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg transition-all cursor-pointer" type="button">' + (currentQ < quizData.length - 1 ? 'Soal Berikutnya →' : 'Lihat Hasil') + '</button></div>';
+  
+  container.innerHTML = htmlContent;
+
+  var optionEls = container.querySelectorAll('.quiz-option');
+  for (var j = 0; j < optionEls.length; j++) {
+    (function(opt) {
+      opt.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (answered) return;
+        answered = true;
+        var idx = parseInt(this.getAttribute('data-idx'));
+        var correct = idx === q.ans;
+        var pointsEarned = correct ? info.multiplier : 0;
+        score += pointsEarned;
+        this.classList.add(correct ? 'correct' : 'wrong');
+        if (!correct) {
+          var correctOpt = container.querySelector('.quiz-option[data-idx="' + q.ans + '"]');
+          if (correctOpt) correctOpt.classList.add('correct');
+        }
+        var fb = document.getElementById('quiz-feedback');
+        fb.classList.remove('hidden');
+        fb.className = 'mt-5 rounded-xl p-4 text-sm ' + (correct ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' : 'bg-red-50 border border-red-200 text-red-700');
+        fb.innerHTML = correct ? '✅ Benar! +' + pointsEarned + ' poin!' : '❌ Kurang tepat. Jawaban: <strong>' + q.opts[q.ans] + '</strong>';
+        document.getElementById('quiz-next').classList.remove('hidden');
+      });
+    })(optionEls[j]);
+  }
+
+  var nextBtn = document.getElementById('quiz-next');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      currentQ++;
+      renderQuiz();
+    });
+  }
+  
+  lucide.createIcons();
+}
+
+function startQuiz() {
+  currentQ = 0;
+  score = 0;
+  document.getElementById('level-selector').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  renderQuiz();
+}
+
+function showResult() {
+  document.getElementById('quiz-container').classList.add('hidden');
+  var r = document.getElementById('quiz-result');
+  r.classList.remove('hidden');
+  var maxPoints = quizLevels[currentLevel].length * levelInfo[currentLevel].multiplier;
+  var pct = Math.round((score / maxPoints) * 100);
+  var info = levelInfo[currentLevel];
+  
+  document.getElementById('result-score').textContent = score + ' / ' + maxPoints;
+  document.getElementById('result-difficulty').textContent = 'Tingkat: ' + info.emoji + ' ' + info.label;
+  
+  if (pct >= 80) {
+    document.getElementById('result-icon').textContent = '🏆';
+    document.getElementById('result-title').textContent = 'Luar Biasa!';
+    document.getElementById('result-text').textContent = 'Kamu menguasai materi dengan sangat baik! 🚀';
+  } else if (pct >= 60) {
+    document.getElementById('result-icon').textContent = '👍';
+    document.getElementById('result-title').textContent = 'Bagus!';
+    document.getElementById('result-text').textContent = 'Pemahamanmu sudah baik, coba level yang lebih sulit! 💪';
+  } else {
+    document.getElementById('result-icon').textContent = '📖';
+    document.getElementById('result-title').textContent = 'Tetap Semangat!';
+    document.getElementById('result-text').textContent = 'Pelajari kembali materinya dan coba ulangi! 📚';
+  }
+}
+
+document.getElementById('quiz-restart').addEventListener('click', function(e) {
+  e.preventDefault();
+  currentQ = 0; 
+  score = 0;
+  document.getElementById('quiz-result').classList.add('hidden');
+  startQuiz();
+});
+
+document.getElementById('quiz-change-level').addEventListener('click', function(e) {
+  e.preventDefault();
+  currentQ = 0; 
+  score = 0;
+  currentLevel = null;
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('level-selector').classList.remove('hidden');
+});
+
+// Level selection handler
+var levelBtns = document.querySelectorAll('.level-btn');
+for (var i = 0; i < levelBtns.length; i++) {
+  levelBtns[i].addEventListener('click', function(e) {
+    e.preventDefault();
+    currentLevel = this.getAttribute('data-level');
+    startQuiz();
+  });
+}
+
+// === Scroll animations ===
+var observer = new IntersectionObserver(function(entries) {
+  for (var i = 0; i < entries.length; i++) {
+    var e = entries[i];
+    if (e.isIntersecting) e.target.classList.add('anim-in');
+  }
+}, { threshold: 0.1 });
+var cards = document.querySelectorAll('.glass-card');
+for (var i = 0; i < cards.length; i++) {
+  observer.observe(cards[i]);
+}
+
+// === Active nav ===
+var sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', function() {
+  var current = '';
+  for (var i = 0; i < sections.length; i++) {
+    var s = sections[i];
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  }
+  var navLinks = document.querySelectorAll('.nav-link');
+  for (var i = 0; i < navLinks.length; i++) {
+    var l = navLinks[i];
+    var href = l.getAttribute('href');
+    if (href === '#' + current) {
+      l.classList.add('active');
+    } else {
+      l.classList.remove('active');
+    }
+  }
+});
+
+// Desktop nav links smooth scroll
+var desktopLinks = document.querySelectorAll('.nav-link');
+for (var i = 0; i < desktopLinks.length; i++) {
+  desktopLinks[i].addEventListener('click', function(e) {
+    e.preventDefault();
+    var href = this.getAttribute('href');
+    if (href && href.charAt(0) === '#') {
+      var target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+}
+
+// === PROMPT QUEST GAME ===
+const gameScenarios = [
+  {
+    level: 1,
+    title: "🎓 Tutor Matematika",
+    scenario: "Seorang siswa SMA kesulitan memahami rumus diskriminan. Dia perlu penjelasan visual dan contoh soal yang mudah.",
+    context: "Siswa kelas X yang belajar dari rumah",
+    challenge: "Buat prompt yang bisa menjelaskan diskriminan dengan cara yang interaktif dan mudah diingat",
+    criteria: [
+      { name: "Role Jelas", points: 15, check: (p) => p.toLowerCase().includes("guru") || p.toLowerCase().includes("tutor") },
+      { name: "Target Audience", points: 15, check: (p) => p.toLowerCase().includes("siswa") || p.toLowerCase().includes("kelas") },
+      { name: "Contoh Konkret", points: 20, check: (p) => p.toLowerCase().includes("contoh") || p.toLowerCase().includes("soal") },
+      { name: "Format Jelas", points: 20, check: (p) => p.toLowerCase().includes("langkah") || p.toLowerCase().includes("poin") || p.toLowerCase().includes("cara") },
+      { name: "Tone Tepat", points: 15, check: (p) => p.toLowerCase().includes("sederhana") || p.toLowerCase().includes("mudah") }
+    ],
+    hint: "Gunakan: Role (guru), Konteks (siswa), Instruksi (jelaskan dengan contoh), Format (poin/langkah), Tone (sederhana)"
+  },
+  {
+    level: 2,
+    title: "🏥 Asisten Kesehatan",
+    scenario: "UMKM klinik kecil ingin chatbot yang bisa memberikan informasi awal tentang gejala umum tanpa menggantikan dokter.",
+    context: "Pasien yang datang ke klinik dengan pertanyaan umum",
+    challenge: "Buat prompt AI yang informatif tapi tetap menekankan untuk konsultasi dokter jika diperlukan",
+    criteria: [
+      { name: "Informasi Akurat", points: 20, check: (p) => p.toLowerCase().includes("informasi") || p.toLowerCase().includes("gejala") },
+      { name: "Disclaimer Jelas", points: 25, check: (p) => p.toLowerCase().includes("dokter") || p.toLowerCase().includes("konsultasi") || p.toLowerCase().includes("medis") },
+      { name: "Empati", points: 15, check: (p) => p.toLowerCase().includes("ramah") || p.toLowerCase().includes("membantu") },
+      { name: "Format Output", points: 20, check: (p) => p.toLowerCase().includes("ringkas") || p.toLowerCase().includes("jelas") || p.toLowerCase().includes("poin") },
+      { name: "Keamanan Data", points: 20, check: (p) => p.toLowerCase().includes("pribadi") || p.toLowerCase().includes("privasi") }
+    ],
+    hint: "Ingat: Keamanan prioritas! Selalu ingatkan untuk konsultasi dokter. Gunakan bahasa yang empati dan ringkas."
+  },
+  {
+    level: 3,
+    title: "🌾 AI Petani Cerdas",
+    scenario: "Petani muda ingin menggunakan AI untuk mendeteksi penyakit tanaman dari foto. Prompt perlu detail tapi mudah digunakan.",
+    context: "Petani dengan smartphone standar, tidak begitu tech-savvy",
+    challenge: "Rancang prompt yang bisa menganalisis foto tanaman dan memberikan rekomendasi aksi praktis",
+    criteria: [
+      { name: "Instruksi Spesifik", points: 25, check: (p) => p.toLowerCase().includes("foto") || p.toLowerCase().includes("gambar") || p.toLowerCase().includes("deskripsi") },
+      { name: "Chain-of-Thought", points: 20, check: (p) => p.toLowerCase().includes("langkah") || p.toLowerCase().includes("analisis") || p.toLowerCase().includes("proses") },
+      { name: "Rekomendasi Aksi", points: 20, check: (p) => p.toLowerCase().includes("solusi") || p.toLowerCase().includes("tindakan") || p.toLowerCase().includes("rekomendasi") },
+      { name: "Bahasa Sederhana", points: 20, check: (p) => p.toLowerCase().includes("sederhana") || p.toLowerCase().includes("mudah") },
+      { name: "Output Praktis", points: 15, check: (p) => p.toLowerCase().includes("ringkas") || p.toLowerCase().includes("praktis") }
+    ],
+    hint: "CoT sangat membantu di sini. Minta AI menunjukkan proses analisisnya. Instruksi: apa yang dilihat, apa penyakitnya, apa solusinya."
+  },
+  {
+    level: 4,
+    title: "💼 Copywriter UMKM",
+    scenario: "UMKM fashion perlu AI yang bisa menulis deskripsi produk menarik untuk e-commerce. Tapi harus konsisten dengan brand voice mereka.",
+    context: "Fashion minimalis modern, target Gen Z, harga menengah ke atas",
+    challenge: "Buat prompt yang menghasilkan copy marketing yang menarik, authentic, dan on-brand",
+    criteria: [
+      { name: "Brand Voice", points: 20, check: (p) => p.toLowerCase().includes("brand") || p.toLowerCase().includes("gaya") || p.toLowerCase().includes("tone") },
+      { name: "Target Market", points: 20, check: (p) => p.toLowerCase().includes("gen z") || p.toLowerCase().includes("muda") || p.toLowerCase().includes("target") },
+      { name: "Format Spesifik", points: 20, check: (p) => p.toLowerCase().includes("judul") || p.toLowerCase().includes("deskripsi") || p.toLowerCase().includes("fitur") },
+      { name: "Few-shot Example", points: 20, check: (p) => p.toLowerCase().includes("contoh") || p.toLowerCase().includes("referensi") },
+      { name: "Call-to-Action", points: 20, check: (p) => p.toLowerCase().includes("beli") || p.toLowerCase().includes("cta") || p.toLowerCase().includes("action") }
+    ],
+    hint: "Few-shot prompting cocok! Berikan 1-2 contoh produk yang sudah dijual. Jelaskan tone: casual tapi premium, tidak mainstream."
+  },
+  {
+    level: 5,
+    title: "🎨 Desain Thinking Challenge",
+    scenario: "Problem: Banyak siswa SMA stress karena beban tugas. Solusi: Aplikasi AI yang membantu break down tugas besar menjadi steps kecil.",
+    context: "Siswa SMA kelas X-XII, level stress tinggi, butuh motivasi",
+    challenge: "Prompts yang bisa memotivasi sambil membantu decompose masalah kompleks menjadi actionable steps",
+    criteria: [
+      { name: "Empati & Psikologi", points: 25, check: (p) => p.toLowerCase().includes("stress") || p.toLowerCase().includes("motivasi") || p.toLowerCase().includes("dorongan") },
+      { name: "Problem Decomposition", points: 25, check: (p) => p.toLowerCase().includes("langkah") || p.toLowerCase().includes("breakdown") || p.toLowerCase().includes("tahap") },
+      { name: "Personalisasi", points: 20, check: (p) => p.toLowerCase().includes("gaya belajar") || p.toLowerCase().includes("preferensi") },
+      { name: "Positive Framing", points: 20, check: (p) => p.toLowerCase().includes("bisa") || p.toLowerCase().includes("mampu") || p.toLowerCase().includes("kuat") },
+      { name: "Long-term Thinking", points: 10, check: (p) => p.toLowerCase().includes("berkelanjutan") || p.toLowerCase().includes("jangka panjang") }
+    ],
+    hint: "Ini masalah Design Thinking! Empati adalah kunci. Prompt harus bisa mengubah panic menjadi actionable plan yang terukur dan motivasi."
+  },
+  {
+    level: 6,
+    title: "🎬 Content Creator Gen Z",
+    scenario: "Seorang TikToker Gen Z ingin AI yang bisa membantu brainstorm ide konten viral yang authentic, entertaining, dan sejalan dengan value mereka.",
+    context: "Content creator muda, 100K followers, niche: lifestyle + sustainability",
+    challenge: "Rancang prompt yang bisa generate ide konten yang trending tapi tetap on-brand dan tidak terasa AI-generated",
+    criteria: [
+      { name: "Authentic Voice", points: 25, check: (p) => p.toLowerCase().includes("authentic") || p.toLowerCase().includes("genuine") || p.toLowerCase().includes("asli") },
+      { name: "Trend Awareness", points: 20, check: (p) => p.toLowerCase().includes("trending") || p.toLowerCase().includes("viral") || p.toLowerCase().includes("tren") },
+      { name: "Few-shot Examples", points: 20, check: (p) => p.toLowerCase().includes("contoh") || p.toLowerCase().includes("referensi") || p.toLowerCase().includes("mirip") },
+      { name: "Format Spesifik", points: 20, check: (p) => p.toLowerCase().includes("tiktok") || p.toLowerCase().includes("script") || p.toLowerCase().includes("hook") },
+      { name: "Brand Alignment", points: 15, check: (p) => p.toLowerCase().includes("sustainability") || p.toLowerCase().includes("nilai") || p.toLowerCase().includes("value") }
+    ],
+    hint: "Mix role-based + few-shot! Contoh: 'Seperti kreator @xxx yang membuat konten tentang...' Fokus pada hook 3 detik pertama untuk TikTok."
+  },
+  {
+    level: 7,
+    title: "🤖 AI Ethics Advisor",
+    scenario: "Startup ingin AI yang bisa analisis prompt untuk mendeteksi bias, potensi harm, dan privacy issues sebelum deployment.",
+    context: "Tim QA yang tidak punya background ethics, butuh guidance praktis",
+    challenge: "Buat prompt yang bisa evaluate prompt lain dari perspektif etika, bias, dan keamanan dengan kriteria jelas",
+    criteria: [
+      { name: "Kriteria Evaluasi", points: 25, check: (p) => p.toLowerCase().includes("bias") || p.toLowerCase().includes("etika") || p.toLowerCase().includes("keamanan") },
+      { name: "Framework Terstruktur", points: 20, check: (p) => p.toLowerCase().includes("kategori") || p.toLowerCase().includes("checklist") || p.toLowerCase().includes("rubrik") },
+      { name: "Actionable Output", points: 20, check: (p) => p.toLowerCase().includes("rekomendasi") || p.toLowerCase().includes("improvement") || p.toLowerCase().includes("suggestion") },
+      { name: "Non-Technical Language", points: 20, check: (p) => p.toLowerCase().includes("mudah") || p.toLowerCase().includes("sederhana") || p.toLowerCase().includes("jelas") },
+      { name: "Examples", points: 15, check: (p) => p.toLowerCase().includes("contoh") || p.toLowerCase().includes("ilustrasi") }
+    ],
+    hint: "Chain-of-Thought + Role-based powerful di sini. Buat AI jadi 'ethics reviewer'. Beri contoh apa itu bias, harmful content, privacy violation."
+  },
+  {
+    level: 8,
+    title: "📚 Personalized Learning Path",
+    scenario: "Platform edtech ingin AI yang bisa generate learning paths yang adaptive sesuai learning style, pace, dan goals individual siswa.",
+    context: "Siswa dengan diverse backgrounds: ada yang visual learner, auditory, kinesthetic, berbeda kecepatan belajar",
+    challenge: "Buat prompt yang sophisticated untuk personalisasi education experience tanpa membuat AI overwhelmed",
+    criteria: [
+      { name: "Learning Style Recognition", points: 25, check: (p) => p.toLowerCase().includes("visual") || p.toLowerCase().includes("auditory") || p.toLowerCase().includes("kinesthetic") },
+      { name: "Adaptive Logic", points: 20, check: (p) => p.toLowerCase().includes("progress") || p.toLowerCase().includes("adjust") || p.toLowerCase().includes("adaptive") },
+      { name: "Holistic Assessment", points: 20, check: (p) => p.toLowerCase().includes("goals") || p.toLowerCase().includes("strength") || p.toLowerCase().includes("challenge") },
+      { name: "Scaffolding", points: 20, check: (p) => p.toLowerCase().includes("difficulty") || p.toLowerCase().includes("level") || p.toLowerCase().includes("progression") },
+      { name: "Motivation Factor", points: 15, check: (p) => p.toLowerCase().includes("motivasi") || p.toLowerCase().includes("engagement") || p.toLowerCase().includes("reward") }
+    ],
+    hint: "Ini advanced! Kombinasikan role-based (education expert) + CoT (analyze learner profile) + iterative (recommend personalized path). Pikirkan VARK model."
+  },
+  {
+    level: 9,
+    title: "🌐 Multi-Cultural Content Bridge",
+    scenario: "Organisasi global ingin AI yang bisa adapt konten dari satu budaya ke kultur lain TANPA menghilangkan essence-nya atau jadi cultural appropriation.",
+    context: "Timnya lintas negara (Indonesia, Malaysia, Singapura, Philipina), diverse cultural sensitivity",
+    challenge: "Rancang prompt yang sophisticated untuk cultural translation yang respectful dan authentic",
+    criteria: [
+      { name: "Cultural Sensitivity", points: 25, check: (p) => p.toLowerCase().includes("budaya") || p.toLowerCase().includes("cultural") || p.toLowerCase().includes("context") },
+      { name: "Essence Preservation", points: 20, check: (p) => p.toLowerCase().includes("essence") || p.toLowerCase().includes("makna") || p.toLowerCase().includes("pesan") },
+      { name: "Avoid Stereotypes", points: 20, check: (p) => p.toLowerCase().includes("stereotype") || p.toLowerCase().includes("avoid") || p.toLowerCase().includes("prevent") },
+      { name: "Local Nuances", points: 20, check: (p) => p.toLowerCase().includes("nuansa") || p.toLowerCase().includes("local") || p.toLowerCase().includes("specific") },
+      { name: "Feedback Loop", points: 15, check: (p) => p.toLowerCase().includes("review") || p.toLowerCase().includes("native") || p.toLowerCase().includes("validation") }
+    ],
+    hint: "Role-based crucial: 'Be a cultural consultant who understands [source culture] AND [target culture]'. Emphasize what to AVOID, not just what to do."
+  },
+  {
+    level: 10,
+    title: "🚀 The ULTIMATE Challenge: AI-Powered Startup Pitch",
+    scenario: "Kamu adalah founder yang akan pitch startup ke investor. Startup-mu: AI tutoring platform untuk underserved communities. Buat prompt yang bisa help AI generate compelling pitch deck content.",
+    context: "Investor yang sophisticated, care about impact + ROI, skeptical terhadap hype AI",
+    challenge: "HARDEST LEVEL: Design prompt yang balance antara technical credibility, emotional impact, market opportunity, dan realistic execution plan. Harus multi-faceted!",
+    criteria: [
+      { name: "Compelling Narrative", points: 25, check: (p) => p.toLowerCase().includes("problem") && (p.toLowerCase().includes("solution") || p.toLowerCase().includes("opportunity")) },
+      { name: "Market Insight", points: 25, check: (p) => p.toLowerCase().includes("market") || p.toLowerCase().includes("user") || p.toLowerCase().includes("customer") },
+      { name: "Tech Credibility", points: 20, check: (p) => p.toLowerCase().includes("prompt engineering") || p.toLowerCase().includes("design thinking") || p.toLowerCase().includes("ai") },
+      { name: "Impact Focus", points: 20, check: (p) => p.toLowerCase().includes("impact") || p.toLowerCase().includes("underserved") || p.toLowerCase().includes("equity") },
+      { name: "Call-to-Action", points: 10, check: (p) => p.toLowerCase().includes("funding") || p.toLowerCase().includes("partnership") || p.toLowerCase().includes("invest") }
+    ],
+    hint: "FINAL BOSS LEVEL! Combine EVERYTHING you learned: role-based (pitch expert) + few-shot (show pitch deck structure) + CoT (explain investor psychology) + iterative mindset. Make it REAL and COMPELLING! 🎯🚀"
+  }
+];
+
+let gameState = { score: 0, streak: 0, level: 1, totalCorrect: 0, gamePlaying: false, currentScenario: null };
+
+document.getElementById('game-start-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  startGame();
+});
+
+function startGame() {
+  gameState.gamePlaying = true;
+  gameState.currentScenario = gameScenarios[gameState.level - 1] || gameScenarios[0];
+  renderGameRound();
+}
+
+function renderGameRound() {
+  var s = gameState.currentScenario;
+  var content = document.getElementById('game-content');
+  var criteriaHtml = '';
+  s.criteria.forEach(function(c, i) {
+    criteriaHtml += '<div class="flex items-center gap-3 rounded-lg px-4 py-2.5 bg-gray-50 border border-gray-100"><input type="checkbox" class="w-4 h-4 rounded accent-orange-500 criteria-check" data-idx="' + i + '" disabled><span class="text-xs text-gray-600">' + c.name + '</span><span class="ml-auto text-xs font-bold text-orange-600">+' + c.points + '</span></div>';
+  });
+
+  content.innerHTML = '<div><div class="flex items-center justify-between mb-6"><div><div class="text-sm font-semibold text-gray-500">Level ' + s.level + '</div><div class="text-xl font-bold text-gray-800">' + s.title + '</div></div><div class="flex items-center gap-2 bg-red-100 text-red-600 rounded-full px-4 py-2"><i data-lucide="clock" class="w-4 h-4"></i><span id="game-timer" class="font-bold text-lg">3:00</span></div></div><div class="space-y-4 mb-6"><div class="bg-blue-50 rounded-xl p-4 border border-blue-200"><div class="text-xs font-semibold text-blue-600 mb-1">📖 SKENARIO</div><p class="text-sm text-gray-700">' + s.scenario + '</p></div><div class="grid sm:grid-cols-2 gap-3"><div class="bg-purple-50 rounded-xl p-4 border border-purple-200"><div class="text-xs font-semibold text-purple-600 mb-1">👤 KONTEKS</div><p class="text-sm text-gray-700">' + s.context + '</p></div><div class="bg-amber-50 rounded-xl p-4 border border-amber-200"><div class="text-xs font-semibold text-amber-600 mb-1">💡 CHALLENGE</div><p class="text-sm text-gray-700">' + s.challenge + '</p></div></div></div><div class="mb-4"><label class="text-sm font-semibold text-gray-700 mb-2 block">✍️ Desain Prompt-mu:</label><textarea id="game-prompt-input" placeholder="Ketik prompt terbaikmu di sini..." class="w-full p-4 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white/80 resize-none" rows="5"></textarea><div class="text-xs text-gray-400 mt-1"><i data-lucide="lightbulb" class="w-3 h-3 inline"></i> 💡 Hint: ' + s.hint + '</div></div><div id="game-criteria-preview" class="mb-6 space-y-2">' + criteriaHtml + '</div><div class="flex gap-3"><button id="game-submit-btn" class="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all" type="button">🎯 Evaluasi Prompt</button><button id="game-forfeit-btn" class="px-6 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all" type="button">Lewat</button></div></div>';
+
+  // Timer
+  var timeLeft = 180;
+  var timerInterval = setInterval(function() {
+    timeLeft--;
+    var mins = Math.floor(timeLeft / 60);
+    var secs = timeLeft % 60;
+    var timerEl = document.getElementById('game-timer');
+    if (timerEl) timerEl.textContent = mins + ':' + String(secs).padStart(2, '0');
+    
+    if (timeLeft <= 30) {
+      document.getElementById('game-timer').parentElement.classList.add('!bg-red-200', '!text-red-700');
+    }
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      evaluatePrompt(document.getElementById('game-prompt-input').value, true);
+    }
+  }, 1000);
+
+  var submitBtn = document.getElementById('game-submit-btn');
+  var forfeitBtn = document.getElementById('game-forfeit-btn');
+  
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      clearInterval(timerInterval);
+      evaluatePrompt(document.getElementById('game-prompt-input').value, false);
+    });
+  }
+
+  if (forfeitBtn) {
+    forfeitBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      clearInterval(timerInterval);
+      gameState.streak = 0;
+      nextRound();
+    });
+  }
+
+  lucide.createIcons();
+}
+
+function evaluatePrompt(prompt, timeUp) {
+  var s = gameState.currentScenario;
+  var points = 0;
+  var results = [];
+  
+  s.criteria.forEach(function(c) {
+    var passed = c.check(prompt);
+    if (passed) {
+      points += c.points;
+      gameState.totalCorrect++;
+    }
+    results.push({ name: c.name, passed: passed, points: c.points });
+  });
+
+  if (timeUp) points = Math.floor(points * 0.7);
+  
+  gameState.score += points;
+  if (points > 60) gameState.streak++;
+  else gameState.streak = 0;
+
+  showEvaluation(results, points, prompt, timeUp);
+}
+
+function showEvaluation(results, points, prompt, timeUp) {
+  var s = gameState.currentScenario;
+  var grade = points >= 80 ? '🏆 SEMPURNA' : points >= 60 ? '👍 BAGUS' : '📖 COBA LAGI';
+  var resultEmoji = points >= 80 ? '🚀' : points >= 60 ? '⭐' : '💪';
+  
+  var resultsHtml = '';
+  results.forEach(function(r) {
+    resultsHtml += '<div class="flex items-center gap-3 rounded-lg px-3 py-2 ' + (r.passed ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200') + '"><span class="text-lg">' + (r.passed ? '✅' : '❌') + '</span><span class="flex-1 text-xs text-gray-700"><strong>' + r.name + '</strong></span><span class="text-xs font-bold ' + (r.passed ? 'text-emerald-600' : 'text-red-400') + '">' + (r.passed ? '+' + r.points : '0/' + r.points) + '</span></div>';
+  });
+
+  document.getElementById('game-content').innerHTML = '<div class="text-center"><div class="text-6xl mb-3">' + resultEmoji + '</div><h3 class="text-2xl font-bold text-gray-800 mb-1">' + grade + '</h3><div class="text-4xl font-extrabold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-6">+' + points + ' Poin</div>' + (timeUp ? '<div class="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-sm text-red-700 mb-4">⏰ Waktu habis! Poin dikurangi 30%</div>' : '') + '<div class="bg-white/60 rounded-xl p-4 mb-6 max-h-40 overflow-y-auto border border-gray-100"><div class="text-xs font-semibold text-gray-600 mb-3 text-left">📋 Prompt Kamu:</div><p class="text-xs text-gray-700 text-left italic">"' + prompt + '"</p></div><div class="space-y-2 mb-6 text-left"><div class="text-xs font-semibold text-gray-600 mb-2">📊 KRITERIA EVALUASI:</div>' + resultsHtml + '</div><button id="next-level-btn" class="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-8 py-3 rounded-2xl hover:shadow-lg transition-all" type="button">' + (gameState.level >= gameScenarios.length ? '🏁 Selesai & Lihat Hasil' : '➡️ Level Berikutnya') + '</button></div>';
+
+  updateGameStats();
+  var nextLevelBtn = document.getElementById('next-level-btn');
+  if (nextLevelBtn) {
+    nextLevelBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      nextRound();
+    });
+  }
+  lucide.createIcons();
+}
+
+function nextRound() {
+  if (gameState.level >= gameScenarios.length) {
+    showGameOver();
+  } else {
+    gameState.level++;
+    gameState.currentScenario = gameScenarios[gameState.level - 1];
+    renderGameRound();
+  }
+}
+
+function showGameOver() {
+  var accuracy = Math.round((gameState.totalCorrect / (gameScenarios.length * 5)) * 100);
+  var title = accuracy >= 80 ? '🏆 PROMPT ENGINEER LEGEND!' : accuracy >= 60 ? '🌟 GREAT WORK!' : '💪 KEEP PRACTICING!';
+  
+  var gameOverHtml = '<div class="text-center"><div class="text-6xl mb-4">🎉</div><h3 class="text-3xl font-bold text-gray-800 mb-2">' + title + '</h3><p class="text-gray-500 mb-6">Kamu telah menyelesaikan semua level Challenge!</p><div class="grid sm:grid-cols-3 gap-4 mb-8"><div class="bg-orange-50 rounded-xl p-5 border border-orange-200"><div class="text-3xl font-bold text-orange-600">' + gameState.score + '</div><div class="text-xs text-gray-600 mt-1">Total Poin</div></div><div class="bg-pink-50 rounded-xl p-5 border border-pink-200"><div class="text-3xl font-bold text-pink-600">' + accuracy + '%</div><div class="text-xs text-gray-600 mt-1">Akurasi</div></div><div class="bg-emerald-50 rounded-xl p-5 border border-emerald-200"><div class="text-3xl font-bold text-emerald-600">' + gameState.level + '</div><div class="text-xs text-gray-600 mt-1">Semua Level</div></div></div><div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-200 mb-6 text-left"><div class="text-sm font-bold text-gray-800 mb-3">🎓 Pelajaran Kunci:</div><ul class="text-xs text-gray-700 space-y-1.5"><li>✨ Role, konteks, dan format output PENTING!</li><li>✨ Iterasi adalah teman terbaik Prompt Engineer</li><li>✨ Pahami siapa user-mu = prompt lebih efektif</li><li>✨ Design Thinking + Prompt Engineering = Super Power 🚀</li></ul></div><div class="flex gap-3"><button id="game-replay-btn" class="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold py-3 rounded-2xl hover:shadow-lg transition-all" type="button">🔄 Ulangi Game</button><button id="back-to-top-btn" class="flex-1 bg-white border-2 border-orange-500 text-orange-600 font-bold py-3 rounded-2xl hover:bg-orange-50 transition-all" type="button">📚 Kembali ke Materi</button></div></div>';
+  
+  document.getElementById('game-content').innerHTML = gameOverHtml;
+
+  var replayBtn = document.getElementById('game-replay-btn');
+  var backBtn = document.getElementById('back-to-top-btn');
+
+  if (replayBtn) {
+    replayBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      gameState = { score: 0, streak: 0, level: 1, totalCorrect: 0, gamePlaying: false, currentScenario: null };
+      document.getElementById('game-start-btn').click();
+    });
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  lucide.createIcons();
+}
+
+function updateGameStats() {
+  document.getElementById('game-score').textContent = gameState.score;
+  document.getElementById('game-streak').textContent = gameState.streak;
+  document.getElementById('game-level').textContent = gameState.level;
+  document.getElementById('your-rank-score').textContent = gameState.score;
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e1b8c377023a8da',t:'MTc3NDQxNjg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
